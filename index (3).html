@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Método CC — Presentación de Venta</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0F0F0F;
+  --orange:#FF5722;
+  --od:#E64A19;
+  --white:#FFFFFF;
+  --off:#F8F7F4;
+  --gray:#9E9E9E;
+  --dark:#333333;
+  --light:#F0EEE9;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Manrope',sans-serif;background:var(--white);color:var(--black);overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem 3rem;background:rgba(255,255,255,0.96);backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,0,0,0.06)}
+.nav-logo{font-size:15px;font-weight:800;color:var(--black)}
+.nav-logo span{color:var(--orange)}
+.nav-dots{display:flex;gap:7px}
+.nd{width:7px;height:7px;border-radius:50%;background:rgba(0,0,0,0.15);cursor:pointer;border:none;transition:all .3s}
+.nd.active{background:var(--orange);transform:scale(1.35)}
+
+/* SECTIONS */
+section{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:7rem 5rem 4rem;position:relative;overflow:hidden}
+
+/* DOTS PATTERN */
+.dot-bg{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(0,0,0,0.035) 1px,transparent 1px);background-size:28px 28px;pointer-events:none}
+.dot-bg-inv{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:28px 28px;pointer-events:none}
+
+/* EYEBROW */
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);margin-bottom:1rem}
+.eyebrow-inv{color:rgba(255,255,255,0.5)}
+
+/* TITLES */
+.t-hero{font-size:clamp(2.8rem,5.8vw,5.2rem);font-weight:800;line-height:1.08;letter-spacing:-.025em;margin-bottom:1.5rem;color:var(--black)}
+.t-section{font-size:clamp(2rem,4vw,3.2rem);font-weight:800;line-height:1.1;letter-spacing:-.02em;margin-bottom:2rem;color:var(--black)}
+.t-inv{color:var(--white)}
+.accent{color:var(--orange)}
+.ghost{-webkit-text-stroke:2px rgba(0,0,0,0.1);color:transparent}
+.ghost-inv{-webkit-text-stroke:2px rgba(255,255,255,0.2);color:transparent}
+
+/* EDITABLE FIELDS */
+.editable{
+  display:inline-block;
+  min-width:80px;
+  border-bottom:2px dashed var(--orange);
+  color:var(--orange);
+  font-weight:800;
+  padding:0 4px 2px;
+  cursor:text;
+  border-radius:2px;
+  transition:background .2s;
+  outline:none;
+}
+.editable:focus{background:rgba(255,87,34,0.06);border-bottom-style:solid}
+.editable-inv{border-bottom-color:rgba(255,107,53,0.7);color:rgba(255,107,53,0.9)}
+.editable-hint{font-size:11px;color:var(--gray);margin-top:.75rem;display:flex;align-items:center;gap:6px;font-weight:500}
+.editable-hint::before{content:'✏️';font-size:11px}
+
+/* ── B1 HERO ── */
+#b1{background:var(--white);align-items:center;text-align:center}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,87,34,0.08);border:1px solid rgba(255,87,34,0.22);color:var(--orange);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:6px 18px;border-radius:20px;margin-bottom:2rem}
+.hero-dot{width:6px;height:6px;background:var(--orange);border-radius:50%;animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
+.hero-sub{font-size:clamp(15px,1.6vw,18px);font-weight:400;color:var(--gray);max-width:540px;line-height:1.7;margin:0 auto 3rem;font-style:italic}
+.hero-stats{display:flex;flex-direction:row;border:1.5px solid rgba(0,0,0,0.08);border-radius:16px;overflow:hidden;background:var(--off);margin:0 auto}
+.stat{padding:1.5rem 2.8rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-width:180px}
+.stat+.stat{border-left:1.5px solid rgba(0,0,0,0.07)}
+.stat-num{font-size:clamp(1.8rem,2.8vw,2.4rem);font-weight:800;color:var(--orange);line-height:1;margin-bottom:6px}
+.stat-label{font-size:12px;color:var(--gray);font-weight:500;line-height:1.4;max-width:140px;text-align:center}
+.stat-text{font-size:14px;color:var(--dark);font-weight:700;max-width:140px;text-align:center;line-height:1.4}
+
+/* ── B2 DOLOR ── */
+#b2{background:var(--off)}
+.dolor-intro{font-size:clamp(16px,2vw,20px);font-weight:400;color:var(--dark);line-height:1.8;max-width:800px;margin-bottom:3rem}
+.dolor-intro strong{font-weight:800;color:var(--black)}
+.dolor-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:2rem}
+.dolor-card{background:var(--white);border-radius:14px;padding:1.75rem;border:1px solid rgba(0,0,0,0.06);border-top:3px solid var(--orange);position:relative;overflow:hidden}
+.dolor-card-num{font-size:3rem;font-weight:800;color:rgba(255,87,34,0.05);position:absolute;bottom:.25rem;right:1rem;line-height:1}
+.dolor-icon{font-size:1.5rem;margin-bottom:.75rem}
+.dolor-title{font-size:15px;font-weight:800;color:var(--black);margin-bottom:6px}
+.dolor-desc{font-size:12px;color:var(--gray);line-height:1.6}
+.dolor-bottom{background:var(--black);border-radius:12px;padding:1.5rem 2rem;display:flex;align-items:center;gap:1rem}
+.dolor-bottom-text{font-size:1rem;font-weight:700;color:var(--white);line-height:1.4}
+.dolor-bottom-text span{color:var(--orange)}
+
+/* ── B3 SOLUCIÓN ── */
+#b3{background:var(--white)}
+.sol-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.sol-points{display:flex;flex-direction:column;gap:1.5rem;margin-bottom:2rem}
+.sol-point{display:flex;gap:1.25rem;align-items:flex-start}
+.sol-num{width:36px;height:36px;border-radius:10px;background:rgba(255,87,34,0.1);border:1px solid rgba(255,87,34,0.2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--orange);flex-shrink:0}
+.sol-title{font-size:15px;font-weight:800;color:var(--black);margin-bottom:3px}
+.sol-desc{font-size:13px;color:var(--gray);line-height:1.6}
+.method-timeline{background:var(--off);border-radius:16px;padding:1.75rem;border:1px solid rgba(0,0,0,0.06)}
+.method-title{font-size:13px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1.25rem}
+.timeline{display:flex;flex-direction:column;gap:.75rem}
+.tl-item{display:flex;gap:12px;align-items:flex-start}
+.tl-dot-wrap{display:flex;flex-direction:column;align-items:center;gap:0}
+.tl-dot{width:10px;height:10px;border-radius:50%;background:var(--orange);flex-shrink:0;margin-top:4px}
+.tl-line{width:1px;height:100%;background:rgba(255,87,34,0.2);flex:1;min-height:20px}
+.tl-week{font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+.tl-text{font-size:13px;color:var(--dark);font-weight:500}
+.meta-mockup{background:#1a1a1a;border-radius:20px;padding:2rem;border:1px solid rgba(255,255,255,0.07);position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.12)}
+.meta-header{display:flex;align-items:center;gap:10px;margin-bottom:1.5rem}
+.meta-logo{width:32px;height:32px;background:#1877F2;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:white}
+.meta-ttl{font-size:14px;font-weight:600;color:white}
+.meta-sub{font-size:11px;color:var(--gray)}
+.meta-ad{background:#111;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.06)}
+.meta-ad-img{height:120px;background:linear-gradient(135deg,var(--orange) 0%,var(--od) 100%);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;color:white}
+.meta-ad-body{padding:1rem}
+.meta-ad-co{font-size:11px;color:var(--gray);margin-bottom:4px}
+.meta-ad-title{font-size:13px;font-weight:700;color:white;margin-bottom:5px}
+.meta-ad-desc{font-size:11px;color:var(--gray);margin-bottom:10px}
+.meta-ad-btn{background:var(--orange);color:white;font-size:11px;font-weight:700;padding:6px 12px;border-radius:5px;display:inline-block}
+.lead-pill{position:absolute;bottom:-12px;right:-12px;background:#1D9E75;color:white;border-radius:10px;padding:9px 13px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:6px;box-shadow:0 8px 24px rgba(29,158,117,0.3)}
+.lead-dot{width:6px;height:6px;background:#fff;border-radius:50%;animation:blink 1.5s infinite}
+
+/* ── B4 GARANTÍA ── */
+#b4{background:var(--white)}
+.guar-wrap{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.guar-big{font-size:clamp(2.8rem,5.5vw,5rem);font-weight:800;line-height:1.05;letter-spacing:-.025em;color:var(--black);margin-bottom:.5rem}
+.guar-sub{font-size:17px;font-weight:400;color:var(--dark);line-height:1.6;margin-bottom:2rem}
+.guar-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,87,34,0.08);border:1px solid rgba(255,87,34,0.22);color:var(--orange);font-size:12px;font-weight:700;padding:8px 18px;border-radius:20px}
+.guar-cards{display:flex;flex-direction:column;gap:1rem}
+.guar-card{background:var(--off);border-radius:14px;padding:1.5rem;border:1px solid rgba(0,0,0,0.06);display:flex;gap:1rem;align-items:flex-start}
+.guar-icon{font-size:1.5rem;flex-shrink:0}
+.guar-title{font-size:15px;font-weight:800;color:var(--black);margin-bottom:4px}
+.guar-desc{font-size:12px;color:var(--gray);line-height:1.5}
+
+/* ── B5 OFERTA ── */
+#b5{background:var(--off)}
+.oferta-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem}
+.oferta-main{background:var(--black);border-radius:22px;padding:2.5rem;position:relative;border:2px solid var(--orange);min-width:0;overflow:hidden}
+.oferta-badge{position:absolute;top:-13px;left:2.5rem;background:var(--orange);color:white;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 14px;border-radius:20px}
+.oferta-name{font-size:18px;font-weight:800;color:var(--white);margin-bottom:.25rem}
+.oferta-tagline{font-size:12px;color:var(--gray);margin-bottom:1.5rem}
+.oferta-price{font-size:3.5rem;font-weight:800;color:var(--orange);line-height:1;margin-bottom:.25rem}
+.oferta-period{font-size:12px;color:var(--gray);margin-bottom:2rem}
+.oferta-features{display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem}
+.of{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,0.65)}
+.of-check{width:18px;height:18px;border-radius:50%;background:rgba(255,87,34,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;color:var(--orange)}
+.oferta-note{font-size:11px;color:var(--gray);padding-top:1.25rem;border-top:1px solid rgba(255,255,255,0.07)}
+.bonus-wrap{background:var(--white);border-radius:22px;padding:2rem;border:1.5px solid rgba(0,0,0,0.07)}
+.bonus-header{font-size:13px;font-weight:800;color:var(--orange);margin-bottom:1.25rem;text-transform:uppercase;letter-spacing:.05em}
+.bonus-list{display:flex;flex-direction:column;gap:.75rem}
+.bonus-item{display:flex;align-items:flex-start;gap:10px;padding:.9rem;background:var(--off);border-radius:10px;border:1px solid rgba(0,0,0,0.05)}
+.bonus-icon{font-size:1rem;flex-shrink:0}
+.bonus-name{font-size:13px;font-weight:700;color:var(--black);margin-bottom:2px}
+.bonus-desc{font-size:11px;color:var(--gray)}
+.urgencia{margin-top:1.25rem;background:rgba(255,87,34,0.08);border:1px solid rgba(255,87,34,0.2);border-radius:10px;padding:1rem 1.25rem;font-size:13px;color:var(--orange);font-weight:600;display:flex;align-items:center;gap:8px}
+
+/* ── B6 CIERRE ── */
+#b6{background:var(--off)}
+.close-title{font-size:clamp(2.5rem,5.5vw,4.8rem);font-weight:800;line-height:1.08;letter-spacing:-.025em;color:var(--white);margin-bottom:1.5rem}
+.close-sub{font-size:17px;color:rgba(255,255,255,0.4);max-width:480px;line-height:1.65;margin-bottom:2rem;font-weight:400}
+.close-urgency{display:inline-flex;align-items:center;gap:8px;background:rgba(255,87,34,0.1);border:1px solid rgba(255,87,34,0.25);color:var(--orange);font-size:13px;font-weight:600;padding:10px 20px;border-radius:20px;margin-bottom:3rem}
+.close-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:4rem}
+.pill{font-size:12px;color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.08);padding:6px 14px;border-radius:20px}
+.close-author{font-size:12px;color:rgba(255,255,255,0.12);margin-top:4rem}
+.close-author span{color:var(--orange)}
+
+/* SCROLL */
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:5px;opacity:.15;animation:float 2.5s ease-in-out infinite;pointer-events:none}
+@keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+.scroll-hint span{font-size:9px;letter-spacing:.1em;text-transform:uppercase}
+.scroll-arrow{width:1px;height:26px;background:linear-gradient(to bottom,transparent,currentColor)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.05s}.d2{transition-delay:.15s}.d3{transition-delay:.28s}.d4{transition-delay:.42s}.d5{transition-delay:.56s}.d6{transition-delay:.70s}
+
+@media(max-width:900px){
+  section{padding:6rem 1.75rem 3rem}
+  nav{padding:1rem 1.5rem}
+  .sol-grid,.guar-wrap,.oferta-grid,.dolor-cards{grid-template-columns:1fr}
+  .hero-stats{flex-wrap:nowrap}
+  .nd{display:none}
+}
+@media(max-width:1100px){
+  #b6 .oferta-main, #b7 .oferta-main{min-width:0}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Método <span>CC</span></div>
+  <div class="nav-dots">
+    <button class="nd active" onclick="goTo('#b1')"></button>
+    <button class="nd" onclick="goTo('#b2')"></button>
+    <button class="nd" onclick="goTo('#b3')"></button>
+    <button class="nd" onclick="goTo('#b4')"></button>
+    <button class="nd" onclick="goTo('#b5')"></button>
+    <button class="nd" onclick="goTo('#b6')"></button>
+    <button class="nd" onclick="goTo('#b7')"></button>
+    <button class="nd" onclick="goTo('#b8')"></button>
+  </div>
+</nav>
+
+<!-- ─── B1 IMPACTO ─── -->
+<section id="b1">
+  <div class="dot-bg"></div>
+  <div class="hero-tag reveal d1"><div class="hero-dot"></div>Exclusivo para empresas de reformas</div>
+  <p class="eyebrow reveal d2">Método CC</p>
+  <h1 class="t-hero reveal d3" style="text-align:center;margin:0 auto 1.5rem">
+    Deja de esperar<br>a que te <span class="accent">llamen.</span><br>
+    <span class="ghost">Empieza a elegir</span><br>
+    a quién <span class="accent">llamas tú.</span>
+  </h1>
+  <p class="hero-sub reveal d4">"El sistema que llena la agenda de tu empresa de reformas cada mes, de forma predecible y sin depender de nadie."</p>
+  <div class="hero-stats reveal d5">
+    <div class="stat">
+      <div class="stat-num">+15</div>
+      <div class="stat-label">Leads garantizados al mes</div>
+    </div>
+    <div class="stat">
+      <div class="stat-text">Fin de la<br>inconstancia</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">×1</div>
+      <div class="stat-label">Una empresa por zona</div>
+    </div>
+  </div>
+  <div class="scroll-hint" style="color:var(--black)"><span>Scroll</span><div class="scroll-arrow"></div></div>
+</section>
+
+<!-- ─── B2 DOLOR ─── -->
+<section id="b2">
+  <div class="eyebrow reveal d1">Tu situación</div>
+  <h2 class="t-section reveal d2">Te estás<br><span class="accent">limitando.</span></h2>
+
+  <div class="dolor-intro reveal d2">
+    Me has contado que ahora mismo consigues clientes principalmente a través del <span class="editable" contenteditable="true" spellcheck="false">boca a boca</span>, y que en los meses malos llegas a <span class="editable" contenteditable="true" spellcheck="false">0-1</span> clientes. Tu mayor problema es que dependes de <span class="editable" contenteditable="true" spellcheck="false">que alguien te recomiende</span> para que el negocio funcione.
+  </div>
+
+
+  <div class="dolor-cards">
+    <div class="dolor-card reveal d3">
+      <div class="dolor-card-num">01</div>
+      <div class="dolor-icon">📉</div>
+      <div class="dolor-title">Ingresos impredecibles</div>
+      <div class="dolor-desc">Meses llenos y meses vacíos. Sin poder controlarlo ni predecirlo. Tu negocio depende de la suerte.</div>
+    </div>
+    <div class="dolor-card reveal d4">
+      <div class="dolor-card-num">02</div>
+      <div class="dolor-icon">⏳</div>
+      <div class="dolor-title">Esperando que te llamen</div>
+      <div class="dolor-desc">Dependes de que alguien te recomiende. Mientras tanto tu competencia capta los clientes que podrían ser tuyos.</div>
+    </div>
+    <div class="dolor-card reveal d5">
+      <div class="dolor-card-num">03</div>
+      <div class="dolor-icon">🚫</div>
+      <div class="dolor-title">Sin control del crecimiento</div>
+      <div class="dolor-desc">No puedes contratar más personal ni expandirte porque no sabes cuándo va a entrar el siguiente cliente.</div>
+    </div>
+  </div>
+
+  <div class="dolor-bottom reveal d6">
+    <div class="dolor-bottom-text">Cada mes sin un sistema es un mes sin control de tu negocio. <span>Sin saber cuándo entra el siguiente cliente, sin saber cuánto vas a facturar, sin poder crecer.</span></div>
+  </div>
+</section>
+
+<!-- ─── B3 SOLUCIÓN ─── -->
+<section id="b3">
+  <div class="dot-bg"></div>
+  <div class="sol-grid">
+    <div>
+      <div class="eyebrow reveal d1">La solución</div>
+      <h2 class="t-section reveal d2">El Método CC.<br><span class="accent">Clientes constantes</span><br>cada mes.</h2>
+      <div class="sol-points">
+        <div class="sol-point reveal d2">
+          <div class="sol-num">01</div>
+          <div>
+            <div class="sol-title">Nunca más un mes en blanco</div>
+            <div class="sol-desc">Tu teléfono sonando con personas interesadas en contratar una reforma. Cada día. Sin depender de que alguien te recomiende. Sin temporadas malas. Sin incertidumbre.</div>
+          </div>
+        </div>
+        <div class="sol-point reveal d3">
+          <div class="sol-num">02</div>
+          <div>
+            <div class="sol-title">Control total de tu crecimiento</div>
+            <div class="sol-desc">Tú decides cuántos clientes quieres al mes. Tú decides cuándo crecer. Tú decides a qué obras decir que sí y a cuáles no. Porque cuando el trabajo entra de forma constante, tú mandas.</div>
+          </div>
+        </div>
+        <div class="sol-point reveal d4">
+          <div class="sol-num">03</div>
+          <div>
+            <div class="sol-title">Tú solo atiendes el teléfono</div>
+            <div class="sol-desc">Nosotros creamos, lanzamos y optimizamos todo. Tú recibes los contactos y cierras con el guión que te entregamos.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="method-timeline reveal d3" style="margin-bottom:1.5rem">
+        <div class="method-title">Cómo funciona en 30 días</div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div>
+            <div><div class="tl-week">Semana 1</div><div class="tl-text">Configuramos todo. Anuncios listos y validados contigo.</div></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div>
+            <div><div class="tl-week">Semana 2</div><div class="tl-text">Campañas activas. Contactos interesados llegando a tu móvil cada día.</div></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div>
+            <div><div class="tl-week">Semana 3</div><div class="tl-text">Optimizamos. Resultados creciendo.</div></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div>
+            <div><div class="tl-week">Semana 4</div><div class="tl-text">Informe completo. Tú decides si continúas.</div></div>
+          </div>
+        </div>
+        <div style="margin-top:1rem;background:var(--orange);border-radius:10px;padding:1rem 1.25rem;display:flex;align-items:center;gap:12px">
+          <div style="font-size:1.5rem">🚀</div>
+          <div>
+            <div style="font-size:10px;font-weight:800;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px">Mes 2 en adelante</div>
+            <div style="font-size:13px;font-weight:700;color:white;line-height:1.4">Más presupuesto, más leads, más obra. El sistema ya está validado. Ahora lo hacemos crecer.</div>
+          </div>
+        </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── B4 GARANTÍA ─── -->
+<section id="b4">
+  <div class="guar-wrap">
+    <div>
+      <div class="eyebrow reveal d1">Garantía</div>
+      <h2 class="guar-big reveal d2">15 leads<br>en 30 días<br>o no pagas.</h2>
+      <div class="reveal d2" style="font-size:1.1rem;font-weight:800;color:var(--orange);margin-bottom:1.25rem;letter-spacing:.05em;text-transform:uppercase">Sin riesgo</div>
+      <p class="guar-sub reveal d3">Sin letra pequeña. Sin condiciones imposibles. Un número concreto y verificable. Si no llegamos, te devolvemos tu dinero.</p>
+      <div class="guar-tag reveal d4"><div class="hero-dot"></div>La garantía que ninguna agencia se atreve a dar</div>
+    </div>
+    <div class="guar-cards">
+      <div class="guar-card reveal d2">
+        <div class="guar-icon">🛡️</div>
+        <div><div class="guar-title">Resultado asegurado</div><div class="guar-desc">15 leads mínimo en 30 días. Si no se cumple te devolvemos tu dinero.</div></div>
+      </div>
+      <div class="guar-card reveal d3">
+        <div class="guar-icon">🔓</div>
+        <div><div class="guar-title">Sin permanencia</div><div class="guar-desc">Ciclos de 30 días. Sin contratos. Decides cada mes si quieres continuar.</div></div>
+      </div>
+      <div class="guar-card reveal d4">
+        <div class="guar-icon">🗺️</div>
+        <div><div class="guar-title">Exclusividad de zona</div><div class="guar-desc">Solo trabajamos con una empresa de reformas por zona. Tu inversión no financia a tu competencia.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── B6 OPCIÓN A ─── -->
+<section id="b6">
+  <div class="dot-bg"></div>
+  <div class="eyebrow reveal d1">El problema</div>
+  <h2 class="t-section reveal d2"><span class="accent">Opción A</span><br>Seguir igual.</h2>
+  <div style="position:absolute;top:1.5rem;right:2rem">
+    <button onclick="resetOpcionA()" style="background:rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.1);border-radius:8px;padding:5px 10px;font-size:14px;color:var(--gray);cursor:pointer;font-family:inherit">↺</button>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem;width:100%;min-width:0">
+
+    <div id="opcion-a-card" style="background:var(--off);border:1.5px solid rgba(0,0,0,0.07);border-radius:22px;padding:2.5rem;position:relative;cursor:pointer;transition:all .4s" onclick="toggleTachado()">
+      <div style="position:absolute;top:-13px;left:2.5rem;background:rgba(0,0,0,0.12);color:var(--dark);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 14px;border-radius:20px">Sin sistema</div>
+      <div style="font-size:18px;font-weight:800;color:var(--black);margin-bottom:.25rem;margin-top:.5rem">Boca a boca</div>
+      <div style="font-size:13px;color:var(--gray);margin-bottom:1.5rem">Seguir esperando que te recomienden</div>
+      <div style="font-size:3rem;font-weight:800;color:rgba(0,0,0,0.08);line-height:1;margin-bottom:.25rem">0€</div>
+      <div style="font-size:13px;color:var(--gray);margin-bottom:2rem">de inversión en captación</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem">
+        <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(0,0,0,0.45)"><div style="width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px">✗</div>Ingresos impredecibles cada mes</div>
+        <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(0,0,0,0.45)"><div style="width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px">✗</div>Sin control sobre tu crecimiento</div>
+        <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(0,0,0,0.45)"><div style="width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px">✗</div>Meses buenos y meses en blanco</div>
+        <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(0,0,0,0.45)"><div style="width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px">✗</div>Sin garantía de ningún resultado</div>
+        <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(0,0,0,0.45)"><div style="width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px">✗</div>Tu competencia captando tus clientes</div>
+      </div>
+      <div id="tachado" style="position:absolute;inset:0;border-radius:20px;background:rgba(255,87,34,0.08);border:2.5px solid var(--orange);display:none;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;pointer-events:none">
+        <div style="font-size:7rem;font-weight:900;color:var(--orange);transform:rotate(-12deg);line-height:1;text-shadow:0 0 40px rgba(255,87,34,0.3)">NO</div>
+        <div style="font-size:14px;font-weight:800;color:var(--orange);transform:rotate(-12deg)">Esta opción no la queremos</div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:1rem">
+      <div class="bonus-wrap reveal d3">
+        <div style="font-size:11px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1.25rem">Antes de continuar</div>
+        <div style="display:flex;flex-direction:column;gap:1.1rem">
+
+          <div id="q1" style="display:flex;align-items:flex-start;gap:10px;line-height:1.5;opacity:0;transition:opacity .5s">
+            <div style="width:22px;height:22px;border-radius:50%;background:rgba(255,87,34,0.1);border:1px solid rgba(255,87,34,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:800;color:var(--orange);margin-top:1px">1</div>
+            <div style="font-size:14px;color:var(--dark)">¿Estás dispuesto a que todo tu negocio dependa del <span class="editable" contenteditable="true" spellcheck="false">boca a boca</span>?</div>
+          </div>
+
+          <div id="q2" style="display:flex;align-items:flex-start;gap:10px;line-height:1.5;opacity:0;transition:opacity .5s">
+            <div style="width:22px;height:22px;border-radius:50%;background:rgba(255,87,34,0.1);border:1px solid rgba(255,87,34,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:800;color:var(--orange);margin-top:1px">2</div>
+            <div style="font-size:14px;color:var(--dark)">¿Estamos de acuerdo en que necesitas un cambio para construir un negocio <strong>estable</strong>?</div>
+          </div>
+
+          <div id="q3" style="display:flex;align-items:flex-start;gap:10px;line-height:1.5;opacity:0;transition:opacity .5s">
+            <div style="width:22px;height:22px;border-radius:50%;background:rgba(255,87,34,0.1);border:1px solid rgba(255,87,34,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:800;color:var(--orange);margin-top:1px">3</div>
+            <div style="font-size:14px;color:var(--dark)">Si sigues igual dentro de 3 años, ¿dónde estará tu <strong>negocio</strong>?</div>
+          </div>
+
+          <div id="q4" style="display:flex;align-items:flex-start;gap:10px;line-height:1.5;padding:1rem;background:rgba(255,87,34,0.06);border-radius:10px;border:1px solid rgba(255,87,34,0.18);opacity:0;transition:opacity .5s">
+            <div style="width:22px;height:22px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:800;color:white;margin-top:1px">4</div>
+            <div style="font-size:14px;font-weight:700;color:var(--black)">Entonces tenemos claro que esta opción <span style="color:var(--orange)">no la queremos</span>, ¿verdad?</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── B7 OPCIÓN B ─── -->
+<section id="b7">
+  <div class="dot-bg"></div>
+  <div class="eyebrow reveal d1">La decisión necesaria</div>
+  <h2 class="t-section reveal d2"><span class="accent">Opción B</span><br>Método CC<br>Trimestre.</h2>
+  <div style="position:absolute;top:1.5rem;right:2rem">
+    <button onclick="resetPrecios()" style="background:rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.1);border-radius:8px;padding:5px 10px;font-size:14px;color:var(--gray);cursor:pointer;font-family:inherit">↺</button>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem">
+    <div class="oferta-main reveal d3" style="position:relative;max-width:none">
+      <div class="oferta-name">Método CC</div>
+      <div class="oferta-tagline">El sistema completo de captación para tu empresa de reformas</div>
+      <div id="precio-b" style="opacity:0;transition:opacity .5s">
+        <div class="oferta-price">1.197€</div>
+        <div class="oferta-period">pago único trimestral · 3 meses</div>
+      </div>
+      <div class="oferta-features" style="margin-top:1.5rem">
+        <div class="of"><div class="of-check">✓</div>Gestión completa de campañas en Meta</div>
+        <div class="of"><div class="of-check">✓</div>Anuncios creados y optimizados cada mes</div>
+        <div class="of"><div class="of-check">✓</div>Exclusividad de zona garantizada</div>
+        <div class="of"><div class="of-check">✓</div>Informe mensual de resultados</div>
+        <div class="of"><div class="of-check">✓</div>Soporte directo por WhatsApp</div>
+        <div class="of"><div class="of-check">✓</div>15 leads garantizados o te devolvemos el dinero</div>
+      </div>
+      <div class="oferta-note">+ 300€/mes en publicidad directamente a Meta — ese dinero es tuyo y lo ves en tiempo real</div>
+    </div>
+
+    <div class="bonus-wrap reveal d3">
+      <div style="font-size:11px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1.25rem">Opción B vs Opción A</div>
+      <div style="display:flex;flex-direction:column;gap:.75rem">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.08em;padding:0 .75rem;margin-bottom:.25rem">
+          <span>Opción A</span><span>Opción B</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;padding:.75rem;background:var(--off);border-radius:10px;font-size:13px">
+          <div style="display:flex;align-items:center;gap:6px;color:rgba(0,0,0,0.4)"><span style="color:#cc3300">✗</span>Sin clientes constantes</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--dark)"><span style="color:var(--orange)">✓</span>Clientes cada mes</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;padding:.75rem;background:var(--off);border-radius:10px;font-size:13px">
+          <div style="display:flex;align-items:center;gap:6px;color:rgba(0,0,0,0.4)"><span style="color:#cc3300">✗</span>Depende del boca a boca</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--dark)"><span style="color:var(--orange)">✓</span>Sistema propio de captación</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;padding:.75rem;background:var(--off);border-radius:10px;font-size:13px">
+          <div style="display:flex;align-items:center;gap:6px;color:rgba(0,0,0,0.4)"><span style="color:#cc3300">✗</span>Ingresos impredecibles</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--dark)"><span style="color:var(--orange)">✓</span>Ingresos predecibles</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;padding:.75rem;background:var(--off);border-radius:10px;font-size:13px">
+          <div style="display:flex;align-items:center;gap:6px;color:rgba(0,0,0,0.4)"><span style="color:#cc3300">✗</span>Sin garantía</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--dark)"><span style="color:var(--orange)">✓</span>15 leads garantizados</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;padding:.75rem;background:var(--off);border-radius:10px;font-size:13px">
+          <div style="display:flex;align-items:center;gap:6px;color:rgba(0,0,0,0.4)"><span style="color:#cc3300">✗</span>Meses en blanco</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--dark)"><span style="color:var(--orange)">✓</span>Agenda siempre llena</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── B8 OPCIÓN C ─── -->
+<section id="b8">
+  <div class="dot-bg"></div>
+  <div class="eyebrow reveal d1">La decisión inteligente</div>
+  <h2 class="t-section reveal d2"><span class="accent">Opción C</span><br>El Método CC<br>ahora.</h2>
+  <div style="position:absolute;top:1.5rem;right:2rem">
+    <button onclick="resetPrecios()" style="background:rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.1);border-radius:8px;padding:5px 10px;font-size:14px;color:var(--gray);cursor:pointer;font-family:inherit">↺</button>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem">
+    <div class="oferta-main reveal d2" style="position:relative">
+      <div class="oferta-name">Método CC</div>
+      <div class="oferta-tagline">El sistema completo de captación para tu empresa de reformas</div>
+      <div id="precio-c" style="opacity:0;transition:opacity .5s">
+        <div class="oferta-price">399€</div>
+        <div class="oferta-period">al mes · sin permanencia</div>
+      </div>
+      <div class="oferta-features" style="margin-top:1.5rem">
+        <div class="of"><div class="of-check">✓</div>Gestión completa de campañas en Meta</div>
+        <div class="of"><div class="of-check">✓</div>Anuncios creados y optimizados cada mes</div>
+        <div class="of"><div class="of-check">✓</div>Exclusividad de zona garantizada</div>
+        <div class="of"><div class="of-check">✓</div>Informe mensual de resultados</div>
+        <div class="of"><div class="of-check">✓</div>Soporte directo por WhatsApp</div>
+        <div class="of"><div class="of-check">✓</div>15 leads garantizados o te devolvemos el dinero</div>
+      </div>
+      <div class="oferta-note">+ 300€/mes en publicidad directamente a Meta — ese dinero es tuyo y lo ves en tiempo real</div>
+    </div>
+
+    <div>
+      <div class="bonus-wrap reveal d3">
+        <div class="bonus-header">🎁 Incluido solo hoy</div>
+        <div class="bonus-list">
+          <div class="bonus-item">
+            <div class="bonus-icon">🎬</div>
+            <div><div class="bonus-name">4 Reels al mes</div><div class="bonus-desc">Contenido profesional para tu Instagram mientras los anuncios trabajan</div></div>
+          </div>
+          <div class="bonus-item">
+            <div class="bonus-icon">📋</div>
+            <div><div class="bonus-name">Guión de Cierre Probado</div><div class="bonus-desc">El sistema exacto para convertir cada lead en un cliente firmado</div></div>
+          </div>
+          <div class="bonus-item">
+            <div class="bonus-icon">📄</div>
+            <div><div class="bonus-name">Presupuesto Probado</div><div class="bonus-desc">La plantilla exacta para presentar presupuestos que se aceptan</div></div>
+          </div>
+          <div class="bonus-item">
+            <div class="bonus-icon">📊</div>
+            <div><div class="bonus-name">Optimización de perfil Instagram</div><div class="bonus-desc">Tu perfil listo y profesional antes de lanzar los anuncios</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<script>
+let tachado=false;
+function toggleTachado(){
+  const card=document.getElementById('opcion-a-card');
+  const overlay=document.getElementById('tachado');
+  tachado=!tachado;
+  if(tachado){
+    card.style.opacity='0.5';
+    card.style.filter='grayscale(0.5)';
+    overlay.style.display='flex';
+  } else {
+    card.style.opacity='1';
+    card.style.filter='none';
+    overlay.style.display='none';
+  }
+}
+
+let currentQ=0;
+const questions=['q1','q2','q3','q4'];
+function showNextQuestion(){
+  if(currentQ<questions.length){
+    const el=document.getElementById(questions[currentQ]);
+    if(el) el.style.opacity='1';
+    currentQ++;
+  }
+}
+function resetOpcionA(){
+  tachado=false;
+  currentQ=0;
+  const card=document.getElementById('opcion-a-card');
+  const overlay=document.getElementById('tachado');
+  card.style.opacity='1';
+  card.style.filter='none';
+  overlay.style.display='none';
+  questions.forEach(q=>{
+    const el=document.getElementById(q);
+    if(el) el.style.opacity='0';
+  });
+}
+function resetPrecios(){
+  const pb=document.getElementById('precio-b');
+  const pc=document.getElementById('precio-c');
+  if(pb) pb.style.opacity='0';
+  if(pc) pc.style.opacity='0';
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter'||e.key===' '||e.key==='ArrowRight'){
+    const b6=document.getElementById('b6');
+    const b7=document.getElementById('b7');
+    const b8=document.getElementById('b8');
+    const r6=b6.getBoundingClientRect();
+    const r7=b7.getBoundingClientRect();
+    const r8=b8.getBoundingClientRect();
+    const inB6=r6.top<window.innerHeight&&r6.bottom>0;
+    const inB7=r7.top<window.innerHeight&&r7.bottom>0;
+    const inB8=r8.top<window.innerHeight&&r8.bottom>0;
+    if(inB6){e.preventDefault();showNextQuestion();}
+    if(inB7&&!inB6){e.preventDefault();const p=document.getElementById('precio-b');if(p)p.style.opacity='1';}
+    if(inB8&&!inB7){e.preventDefault();const p=document.getElementById('precio-c');if(p)p.style.opacity='1';}
+  }
+});
+function goTo(id){document.querySelector(id).scrollIntoView({behavior:'smooth'})}
+const dots=document.querySelectorAll('.nd');
+const secs=document.querySelectorAll('section');
+const secObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const i=Array.from(secs).indexOf(e.target);
+      dots.forEach((d,j)=>d.classList.toggle('active',i===j));
+    }
+  });
+},{threshold:0.4});
+secs.forEach(s=>secObs.observe(s));
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+</script>
+</body>
+</html>
